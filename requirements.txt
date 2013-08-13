@@ -1,5 +1,5 @@
-pyquery
-icalendar
-python-dateutil
-calendar
-pytz
+pyquery==1.2.4
+icalendar==3.5
+python-dateutil==2.1
+Calendar==1.11.4p
+pytz==2013b
