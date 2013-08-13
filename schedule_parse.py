@@ -18,7 +18,7 @@ DAY_MAP = {
   "W": calendar.WEDNESDAY,
   "R": calendar.THURSDAY,
   "F": calendar.FRIDAY 
-  }
+}
 
 ABBR_MAP = {
   "M": "MO",
@@ -44,17 +44,18 @@ def main():
     except:
       print 'Bad shit happened'
   else:
-    parser.print_help()    
+    parser.print_help()
 
 def parse_calendar(document):
   ddtable = document(".datadisplaytable")
+  ddtable = PyQuery(ddtable[-1])
   ddrows = ddtable("tr")
   for row in ddrows.items():
     cell = row.find('.dddefault')
     if len(cell) != 12:
       continue
     event = parse_cell(cell)
-    if event is not None:  
+    if event is not None:
       yield event
 
 def parse_cell(cell):
@@ -72,7 +73,7 @@ def parse_cell(cell):
     fields['start_date'] = datetime.combine(start_date, start_time)
     end_time = parser.parse(start_and_end[1].strip()).time()
     fields['end_time'] = datetime.combine(start_date, end_time)
-    fields['end_date'] = datetime.combine(end_date, end_time)    
+    fields['end_date'] = datetime.combine(end_date, end_time)
     fields['location'] = cell[10].text_content()
     fields['professor'] = cell[11].text_content()
     return create_event(fields)
@@ -95,7 +96,7 @@ def create_event(fields):
   rr['BYDAY'] = dates
   event.add('rrule', rr)
   return event
-  
+
 def serialize_date(dt):
   """
   Serialize a date/time value into an ISO8601 text representation
