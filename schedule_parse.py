@@ -36,9 +36,10 @@ def main():
   parser.add_argument('--input', help='The input HTML file we use to generate the schedule', type=str)
   parser.add_argument('--output', help='The output ics file we write to', type=str)
   args = parser.parse_args()
+  calendar = Calendar()
+  calendar.add('uid', 'Krishnan-Calendar-0')
+  calendar.add_component(create_timezone())
   if args.input is not None and args.output is not None:
-    calendar = Calendar()
-    calendar.add_component(create_timezone())
     try:
       document = PyQuery(filename=args.input)
       for event in parse_calendar(document):
@@ -122,6 +123,7 @@ def create_event(fields):
   if fields is None:
     return
   event = Event()
+  event.add('uid', fields['class_name'] + fields['class_title'])
   event.add('summary', fields['class_name'] + ", " + fields['class_title'])
   event.add('location', fields['location'])
   event.add('dtstart', fields['start_date'])
