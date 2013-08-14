@@ -1,0 +1,6 @@
+# robotstxt.org/
+
+User-agent: *
+Disallow /venv/
+Disallow /templates/
+Disallow /static/
