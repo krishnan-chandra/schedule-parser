@@ -10,15 +10,16 @@ import argparse
 from pytz import timezone
 from dateutil.tz import tzutc
 import traceback
+from random import randint
 
 UTC = tzutc()
 
 DAY_MAP = {
-  "M": calendar.MONDAY, 
+  "M": calendar.MONDAY,
   "T": calendar.TUESDAY,
   "W": calendar.WEDNESDAY,
   "R": calendar.THURSDAY,
-  "F": calendar.FRIDAY 
+  "F": calendar.FRIDAY
 }
 
 ABBR_MAP = {
@@ -36,20 +37,27 @@ def main():
   parser.add_argument('--input', help='The input HTML file we use to generate the schedule', type=str)
   parser.add_argument('--output', help='The output ics file we write to', type=str)
   args = parser.parse_args()
-  calendar = Calendar()
-  calendar.add('uid', 'Krishnan-Calendar-0')
-  calendar.add_component(create_timezone())
   if args.input is not None and args.output is not None:
     try:
-      document = PyQuery(filename=args.input)
-      for event in parse_calendar(document):
-        calendar.add_component(event)
+      calendar = build_calendar(args.input)
       with open(args.output, 'wb') as f:
         f.write(calendar.to_ical())
     except:
       traceback.print_exc();
   else:
     parser.print_help()
+
+def build_calendar(input_file):
+  calendar = Calendar()
+  calendar.add('uid', 'Calendar-' + str(randint(1, 32000)))
+  calendar.add_component(create_timezone())
+  try:
+    document = PyQuery(filename=input_file)
+    for event in parse_calendar(document):
+      calendar.add_component(event)
+    return calendar
+  except:
+    traceback.print_exc();
 
 def create_timezone():
   central = Timezone()
