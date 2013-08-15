@@ -57,7 +57,7 @@ def build_calendar(input_file):
       calendar.add_component(event)
     return calendar
   except:
-    traceback.print_exc();
+    raise Exception('File cannot be parsed')
 
 def create_timezone():
   central = Timezone()
