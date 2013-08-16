@@ -37,3 +37,6 @@ nosetests.xml
 # HTML and iCalendar files
 schedule.html
 *.ics
+
+#Virtual environments
+venv/
